@@ -1,7 +1,7 @@
 version: "3"
 services:
   node:
-    container_name: mysample
+    container_name: myweb
     build: .
     image: takahdocker/mysendsensor:1.0
     tty: true
