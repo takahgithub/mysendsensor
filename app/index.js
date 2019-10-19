@@ -1,6 +1,9 @@
 // expressモジュールを読み込む
 const express = require('express');
 
+//loggerモジュールを読み込む
+const logger = require('./logger');
+
 // expressアプリを生成する
 const app = express();
 
@@ -23,3 +26,4 @@ app.get('/api/v1/list', (req, res) => {
 
 // ポート3000でサーバを立てる
 app.listen(3000, () => console.log('Listening on port 3000'));
+logger.request.info('Listening on port 3000');
