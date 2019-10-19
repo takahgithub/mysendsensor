@@ -1,9 +1,0 @@
-version: "3"
-services:
-  node:
-    container_name: myweb
-    build: .
-    image: takahdocker/mysendsensor:1.0
-    tty: true
-    ports:
-      - 3000:3000
