@@ -1,8 +1,7 @@
-// expressモジュールを読み込む
+// モジュール読み込み
 const express = require('express');
-
-//loggerモジュールを読み込む
 const logger = require('./logger');
+const AWS = require("aws-sdk");
 
 // expressアプリを生成する
 const app = express();
@@ -24,6 +23,21 @@ app.get('/api/v1/list', (req, res) => {
     res.json(todoList);
 });
 
+AWS.config.update({region: 'ap-northeast-1'});
+
+var docClient = new AWS.DynamoDB.DocumentClient();
+var params = {
+    TableName: 'MySensorTag',
+};
+docClient.scan(params, function(err, data){
+    if(err){
+        logger.request.info(err);
+    }else{
+       data.Items.forEach(function(row, index){
+        logger.request.info(row.Datetime);
+       });
+    }
+});
+
 // ポート3000でサーバを立てる
-app.listen(3000, () => console.log('Listening on port 3000'));
-logger.request.info('Listening on port 3000');
+app.listen(3000, () => logger.request.info('Listening on port 3000'));
