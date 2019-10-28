@@ -11,15 +11,27 @@ app.use(express.static('web'));
 
 AWS.config.update({region: 'ap-northeast-1'});
 
-// http://localhost:3000/api/v1/temperature にアクセスしてきたときに
-// センサーデータを返す
+// http://localhost:3000/api/v1/temperature にアクセスしてきたときにセンサーデータを返す
+// クエリで開始日時と終了日時を受け取り、その間の期間のセンサーデータを返す
 app.get('/api/v1/sensordata', (req, res) => {
-    // クライアントに送るJSONデータ
+    const startTime = req.query.startTime;
+    const endTime = req.query.endTime;
+    logger.request.info('startTime:' + startTime + ', endTime:' + endTime);
+    
     var docClient = new AWS.DynamoDB.DocumentClient();
+    // プライマリキーとソートキーの両方を条件指定してあげる必要がある。ソートキーだけではダメだった
+    // #i(ID)がプライマリキー、#d(Datetime)がソートキー
     var params = {
         TableName: 'MySensorTag',
+        ExpressionAttributeNames:{'#i': 'ID', '#d': 'Datetime'},
+        ExpressionAttributeValues:{
+            ':iVal': 'raspi_1',
+            ':dMinVal': startTime,
+            ':dMaxVal': endTime
+        },
+        KeyConditionExpression: '#i = :iVal AND #d BETWEEN :dMinVal AND :dMaxVal'
     };
-    docClient.scan(params, function(err, data){
+    docClient.query(params, function(err, data){
         if(err){
             logger.request.info(err);
         }else{

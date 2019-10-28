@@ -1,38 +1,33 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>センサーデータ</title>
-    <style>
-        html {
-            background-color: rgb(240, 240, 240);
-        }
-    </style>
-    <script type="text/javascript" src="sensorChart.js"></script>
+  <meta charset="UTF-8">
+  <title>センサーデータ</title>
+  <style>
+      html {
+          background-color: rgb(240, 240, 240);
+      }
+  </style>
+  <script type="text/javascript" src="sensorChart.js"></script>
+  <script type="text/javascript" src="updateSensorGraph.js"></script>
+  <script type="text/javascript" src="initializeDatetime.js"></script>
 </head>
 <body>
-    <h1>センサーデータ</h1>
-    <canvas id="myTempChart"></canvas>
-    <canvas id="myPressureChart"></canvas>
-    <canvas id="myLuxChart"></canvas>
-    <canvas id="myHumidityChart"></canvas>
-    <!-- CDN -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
-  
-    <script>
-      fetch('./api/v1/sensordata')
-            .then((response) => response.json())
-            .then((dataList) => {
-              console.log(dataList);
-              var ctx = document.getElementById("myTempChart");
-              plotTempChart(ctx, dataList.Temp);
-              var ctx = document.getElementById("myPressureChart");
-              plotPressureChart(ctx, dataList.Pressure);
-              var ctx = document.getElementById("myLuxChart");
-              plotLuxChart(ctx, dataList.Lux);
-              var ctx = document.getElementById("myHumidityChart");
-              plotHumidityChart(ctx, dataList.Humidity);
-            })
+  <h1>センサーデータ</h1>
+  <input type="datetime-local" id="startTime" onChange="updateSensorGraph()">
+  <input type="datetime-local" id="endTime" onChange="updateSensorGraph()">
+  <canvas id="myTempChart"></canvas>
+  <canvas id="myPressureChart"></canvas>
+  <canvas id="myLuxChart"></canvas>
+  <canvas id="myHumidityChart"></canvas>
+  <!-- CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/ja.js"></script>
+
+  <script>
+    initializeDatetime();
+    updateSensorGraph();
   </script>
 </body>
 </html>

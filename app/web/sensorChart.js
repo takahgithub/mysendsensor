@@ -118,82 +118,106 @@ var humidityOptions = {
     }
 };
 
+var tempChart = null;
 function plotTempChart(ctx, tempData) {
     var data = {
         datasets: [
-          {
-            label: '温度',
-            data: tempData,
-            backgroundColor: 'RGBA(225,95,150, 1)',
-          }
+            {
+                label: '温度',
+                data: tempData,
+                backgroundColor: 'RGBA(225,95,150, 1)',
+            }
         ]
-      };
-      var chartdata = {
+    };
+    var chartdata = {
         type: 'scatter', 
         data: data,
         options: tempOptions
-      };
+    };
 
-      // グラフ作成
-      var myTempChart = new Chart(ctx, chartdata);
+    // グラフ作成
+    // 先にインスタンスを破棄しておかないと、グラフが二重に描画されてしまう
+    // インスタンスはグローバル変数にしてある
+    if (tempChart) {
+        tempChart.destroy();
+    }
+    tempChart = new Chart(ctx, chartdata);
 }
 
+var pressureChart = null;
 function plotPressureChart(ctx, pressureData) {
     var data = {
         datasets: [
-          {
-            label: '気圧',
-            data: pressureData,
-            backgroundColor: 'RGBA(225,95,150, 1)',
-          }
+            {
+                label: '気圧',
+                data: pressureData,
+                backgroundColor: 'RGBA(225,95,150, 1)',
+            }
         ]
-      };
-      var chartdata = {
+    };
+    var chartdata = {
         type: 'scatter', 
         data: data,
         options: pressureOptions
-      };
-
-      // グラフ作成
-      var myPressureChart = new Chart(ctx, chartdata);
+    };
+    
+    // グラフ作成
+    // 先にインスタンスを破棄しておかないと、グラフが二重に描画されてしまう
+    // インスタンスはグローバル変数にしてある
+    if (pressureChart) {
+        pressureChart.destroy();
+    }
+    pressureChart = new Chart(ctx, chartdata);
 }
 
+var luxChart = null;
 function plotLuxChart(ctx, luxData) {
     var data = {
         datasets: [
-          {
-            label: '明るさ',
-            data: luxData,
-            backgroundColor: 'RGBA(225,95,150, 1)',
-          }
+            {
+                label: '明るさ',
+                data: luxData,
+                backgroundColor: 'RGBA(225,95,150, 1)',
+            }
         ]
-      };
-      var chartdata = {
+    };
+    var chartdata = {
         type: 'scatter', 
         data: data,
         options: luxOptions
-      };
+    };
 
-      // グラフ作成
-      var myLuxChart = new Chart(ctx, chartdata);
+    // グラフ作成
+    // 先にインスタンスを破棄しておかないと、グラフが二重に描画されてしまう
+    // インスタンスはグローバル変数にしてある
+    if (luxChart) {
+        luxChart.destroy();
+    }
+    luxChart = new Chart(ctx, chartdata);
 }
 
+var humidityChart = null;
 function plotHumidityChart(ctx, humidityData) {
     var data = {
         datasets: [
-          {
-            label: '湿度',
-            data: humidityData,
-            backgroundColor: 'RGBA(225,95,150, 1)',
-          }
+            {
+                label: '湿度',
+                data: humidityData,
+                backgroundColor: 'RGBA(225,95,150, 1)',
+            }
         ]
-      };
-      var chartdata = {
+    };
+    var chartdata = {
         type: 'scatter', 
         data: data,
         options: humidityOptions
-      };
+    };
 
-      // グラフ作成
-      var myHumidityChart = new Chart(ctx, chartdata);
+    // グラフ作成
+    // 先にインスタンスを破棄しておかないと、グラフが二重に描画されてしまう
+    // インスタンスはグローバル変数にしてある
+    if (humidityChart) {
+        humidityChart.destroy();
+    }
+    humidityChart = new Chart(ctx, chartdata);
 }
