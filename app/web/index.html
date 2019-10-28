@@ -2,50 +2,37 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>TODOリスト</title>
+    <title>センサーデータ</title>
     <style>
         html {
             background-color: rgb(240, 240, 240);
         }
     </style>
+    <script type="text/javascript" src="sensorChart.js"></script>
 </head>
 <body>
-    <h1>TODO List</h1>
-    <div>
-        <ul id="todo-container"></ul>
-    </div>
-
+    <h1>センサーデータ</h1>
+    <canvas id="myTempChart"></canvas>
+    <canvas id="myPressureChart"></canvas>
+    <canvas id="myLuxChart"></canvas>
+    <canvas id="myHumidityChart"></canvas>
+    <!-- CDN -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+  
     <script>
-        // APIからJSONを取得する
-        fetch('./api/v1/list')
+      fetch('./api/v1/sensordata')
             .then((response) => response.json())
-            .then((todoList) => {
-                // id="todo-container"要素を取得する
-                const todoContainer = document.querySelector('#todo-container');
-
-                // コンテナの中身を全部消す
-                todoContainer.innerHTML = '';
-
-                // JSONの各要素に対して
-                for(const item of todoList) {
-                    const li = document.createElement('li');          // リスト要素
-                    const label = document.createElement('label');    // ラベル
-                    const checkbox = document.createElement('input'); // チェックボックス
-                    checkbox.type = 'checkbox';
-                    checkbox.checked = item.done;                     // 項目がdoneならチェック
-                    const text = new Text(item.title);                // 項目名
-
-                    // ラベルにチェックボックスとテキストを追加する
-                    label.appendChild(checkbox);
-                    label.appendChild(text);
-
-                    // リスト要素に先ほどのラベルを追加する
-                    li.appendChild(label);
-
-                    // TODOリストにリスト要素を追加する
-                    todoContainer.appendChild(li);
-                }
+            .then((dataList) => {
+              console.log(dataList);
+              var ctx = document.getElementById("myTempChart");
+              plotTempChart(ctx, dataList.Temp);
+              var ctx = document.getElementById("myPressureChart");
+              plotPressureChart(ctx, dataList.Pressure);
+              var ctx = document.getElementById("myLuxChart");
+              plotLuxChart(ctx, dataList.Lux);
+              var ctx = document.getElementById("myHumidityChart");
+              plotHumidityChart(ctx, dataList.Humidity);
             })
-    </script>
+  </script>
 </body>
 </html>
